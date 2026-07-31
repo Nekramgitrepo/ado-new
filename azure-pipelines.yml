@@ -1,0 +1,35 @@
+trigger:
+ branches:
+   include:
+     - main
+     - feature
+
+pool: nekramagent
+
+stages:
+  - stage: 
+    displayName: infrapipeline
+    jobs:
+      - job: 
+        displayName: terraform init plan apply
+        steps:
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: 'latest'
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'nekram svc'
+              backendAzureRmResourceGroupName: 'dev-rgnew'
+              backendAzureRmStorageAccountName: 'devstorageado'
+              backendAzureRmContainerName: 'adocontainer'
+              backendAzureRmKey: 'infra.tfstate'
+          - script: |
+              terraform plan
+          - script: |
+              terraform apply
+
+ 
+
+
