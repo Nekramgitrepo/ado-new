@@ -49,6 +49,16 @@ stages:
         - task: TerraformTask@5
           inputs:
             provider: 'azurerm'
+            command: 'init'
+            backendServiceArm: 'sepsvc'
+            backendAzureRmOverrideSubscriptionID: '79f5ea50-ad19-4eb9-9f3f-ffa0941f38d5'
+            backendAzureRmResourceGroupName: 'RG-Backend'
+            backendAzureRmStorageAccountName: 'backendstoragevik'
+            backendAzureRmContainerName: 'backendcontainer'
+            backendAzureRmKey: 'sep.tfstate'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
             command: 'apply'
             environmentServiceNameAzureRM: 'sepsvc'
             environmentAzureRmOverrideSubscriptionID: '79f5ea50-ad19-4eb9-9f3f-ffa0941f38d5'
