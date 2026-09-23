@@ -30,18 +30,16 @@ stages:
             environmentAzureRmOverrideSubscriptionID: '79f5ea50-ad19-4eb9-9f3f-ffa0941f38d5'
   - stage: 
     displayName: manualapproval
+    
     jobs:
       - job: 
         displayName: manual approval
         pool: server
         steps:
         - task: ManualValidation@1
-          
           inputs:
-            notifyUsers: 'nekram.stcs@gmail.com'
-            approvers: 'nekram'
-            instructions: 'bhai aaprove kardo'
-            onTimeout: 'resume'
+            notifyUsers: 'user@example.com'
+            instructions: '''Approve this deployment to continue.'''
   - stage: 
     displayName: terraformapply
     jobs:
