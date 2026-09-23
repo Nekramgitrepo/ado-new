@@ -22,12 +22,6 @@ stages:
             backendAzureRmStorageAccountName: 'backendstoragevik'
             backendAzureRmContainerName: 'backendcontainer'
             backendAzureRmKey: 'sep.tfstate'
-  - stage: 
-    displayName: tfsec
-    jobs:
-      - job: 
-        displayName: tfsec secuirity scan
-        steps:
         - task: tfsec@1
           continueOnError: true
           inputs:
