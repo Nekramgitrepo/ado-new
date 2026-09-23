@@ -13,23 +13,43 @@ stages:
       - job: 
         displayName: terraform init plan apply
         steps:
-          - task: TerraformInstaller@1
-            inputs:
-              terraformVersion: 'latest'
-          - task: TerraformTask@5
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              backendServiceArm: 'nekram svc'
-              backendAzureRmResourceGroupName: 'dev-rgnew'
-              backendAzureRmStorageAccountName: 'devstorageado'
-              backendAzureRmContainerName: 'adocontainer'
-              backendAzureRmKey: 'infra.tfstate'
-          - script: |
-              terraform plan
-          - script: |
-              terraform apply
-
- 
-
-
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            backendServiceArm: 'sepsvc'
+            backendAzureRmOverrideSubscriptionID: '79f5ea50-ad19-4eb9-9f3f-ffa0941f38d5'
+            backendAzureRmResourceGroupName: 'RG-Backend'
+            backendAzureRmStorageAccountName: 'backendstoragevik'
+            backendAzureRmContainerName: 'backendcontainer'
+            backendAzureRmKey: 'sep.tfstate'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            environmentServiceNameAzureRM: 'sepsvc'
+            environmentAzureRmOverrideSubscriptionID: '79f5ea50-ad19-4eb9-9f3f-ffa0941f38d5'
+  - stage: 
+    displayName: manualapproval
+    jobs:
+      - job: 
+        displayName: manual approval
+        steps:
+        - task: ManualValidation@1
+          inputs:
+            notifyUsers: 'nekram.stcs@gmail.com'
+            approvers: 'nekram'
+            instructions: 'bhai aaprove kardo'
+            onTimeout: 'resume'
+  - stage: 
+    displayName: terraformapply
+    jobs:
+      - job: 
+        displayName: terraform apply
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            environmentServiceNameAzureRM: 'sepsvc'
+            environmentAzureRmOverrideSubscriptionID: '79f5ea50-ad19-4eb9-9f3f-ffa0941f38d5'
