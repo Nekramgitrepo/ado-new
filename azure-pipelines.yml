@@ -2,9 +2,8 @@ trigger:
  branches:
    include:
      - main
-     - feature
-
-pool: nekramagent
+     
+pool: sepagentpool
 
 stages:
   - stage: 
@@ -34,8 +33,10 @@ stages:
     jobs:
       - job: 
         displayName: manual approval
+        pool: server
         steps:
         - task: ManualValidation@1
+          
           inputs:
             notifyUsers: 'nekram.stcs@gmail.com'
             approvers: 'nekram'
